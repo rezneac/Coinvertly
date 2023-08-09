@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react';
-import {StyleSheet, View, FlatList, Text} from 'react-native';
+import {StyleSheet, View, FlatList, Text, ScrollView} from 'react-native';
 import CurrencyBar from '../components/CurrencyBar';
 import {useCurrencyHandler} from '../apiHandler/useCurrencyHandler';
 import CoinLogo from '../assets/logoIcon/coinLogo.svg';
@@ -17,7 +17,7 @@ const MainScreen = () => {
     fetchData();
   }, []);
 
-  console.log(latestRates);
+  // console.log(latestRates);
   // const data = Object.entries(latestRates);
 
   return (

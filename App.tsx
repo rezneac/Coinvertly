@@ -4,6 +4,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import MainScreen from './src/screens/MainScreen';
 import SearchScreen from './src/screens/SearchScreen';
 import SettingsScreen from './src/screens/SettingsScreen';
+import CustomBottomBar from './src/components/navigation/CustomBottomBar';
 
 const Tab = createBottomTabNavigator();
 
@@ -11,7 +12,8 @@ const TabStack = () => {
   return (
     <Tab.Navigator
       initialRouteName="MainScreen"
-      screenOptions={{headerShown: false}}>
+      screenOptions={{headerShown: false}}
+      tabBar={props => <CustomBottomBar {...props} />}>
       <Tab.Screen name="MainScreen" component={MainScreen} />
       <Tab.Screen name="SearchScreen" component={SearchScreen} />
       <Tab.Screen name="SettingsScreen" component={SettingsScreen} />
