@@ -8,11 +8,11 @@ interface IProps {
 
 const LoadScreen = ({navigation}: IProps) => {
 
-//   useEffect(() => {
-//     setTimeout(() => {
-//       navigation.navigate('MainScreen');
-//     }, 2000);
-//   }, []);
+  useEffect(() => {
+    setTimeout(() => {
+      navigation.navigate('MainScreen');
+    }, 500);
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -20,7 +20,7 @@ const LoadScreen = ({navigation}: IProps) => {
         <Text style={styles.customFontText}> Coinvertly </Text>
       </View>
       <View style={styles.imagePosition}>
-        <LoadIco width={161} height={165} />
+        <LoadIco  width={161} height={165} />
       </View>
       <View style={styles.bottomContent}>
         <ActivityIndicator color={'#181A4B'} size="large" />
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     color: '#181A4B',
   },
   bottomContent: {
-    marginTop: 48,
+    marginTop: 100,
   },
 });
 
