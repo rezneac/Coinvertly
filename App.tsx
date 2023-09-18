@@ -5,6 +5,10 @@ import MainScreen from './src/screens/MainScreen';
 import SearchScreen from './src/screens/SearchScreen';
 import SettingsScreen from './src/screens/SettingsScreen';
 import CustomBottomBar from './src/components/navigation/CustomBottomBar';
+import CurrencyExchangerScreen from './src/screens/CurrencyExchangerScreen';
+
+import {Provider} from 'react-redux';
+import store from './src/redux-saga/store';
 
 const Tab = createBottomTabNavigator();
 
@@ -25,13 +29,19 @@ const Stack = createNativeStackNavigator();
 
 const App = () => {
   return (
-    <NavigationContainer>
-      <Stack.Navigator
-        initialRouteName="TabStack"
-        screenOptions={{headerShown: false}}>
-        <Stack.Screen name="TabStack" component={TabStack} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer>
+        <Stack.Navigator
+          initialRouteName="TabStack"
+          screenOptions={{headerShown: false}}>
+          <Stack.Screen name="TabStack" component={TabStack} />
+          <Stack.Screen
+            name="CurrencyExchangerScreen"
+            component={CurrencyExchangerScreen}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </Provider>
   );
 };
 
