@@ -1,8 +1,17 @@
-import {StyleSheet, View, Text} from 'react-native';
+import {StyleSheet, View, Text, Button, Image} from 'react-native';
 import CoinLogo from '../assets/logoIcon/coinLogo.svg';
 import ContentSlider from '../components/mainscreen/ComponentSlider';
+import store from '../redux-saga/store';
+import {useDispatch} from 'react-redux';
+import {useLayoutEffect} from 'react';
 
 const MainScreen = () => {
+  const dispatch = useDispatch();
+
+  useLayoutEffect(() => {
+    dispatch({type: 'FETCH_CURRENCY_RATE'});
+  }, []);
+
   return (
     <View style={styles.container}>
       <View style={styles.upperView}>
@@ -12,8 +21,8 @@ const MainScreen = () => {
         </View>
       </View>
       <View style={styles.currenciesBars}>
-        <View style={{flex: 1}}>
-          <Text style={styles.baseValueText}>Base Value: USD</Text>
+        <View style={styles.content}>
+          <Text style={styles.baseValueText}>Base Value: {store.getState().AllRates.baseValue}</Text>
           <ContentSlider />
         </View>
       </View>
@@ -59,5 +68,8 @@ const styles = StyleSheet.create({
   },
   logoIconContainer: {
     marginTop: 28,
+  },
+  content: {
+    flex: 1,
   },
 });

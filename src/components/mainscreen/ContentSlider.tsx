@@ -7,7 +7,7 @@ import {
   Dimensions,
 } from 'react-native';
 import CurrencyBar from './CurrencyBar';
-import {useNavigation, NavigationProp} from '@react-navigation/native'; // Import NavigationProp
+import {useNavigation, NavigationProp} from '@react-navigation/native'; 
 
 const styles = StyleSheet.create({
   container: {

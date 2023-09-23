@@ -1,14 +1,14 @@
-import {call, put, takeEvery, takeLatest} from 'redux-saga/effects';
+import {call, put, takeEvery, all} from 'redux-saga/effects';
 import {useCurrencyHandler} from '../apiHandler/useCurrencyHandler';
 
-function* fetchCurrecyRate(action: any) {
-  const [getLatestRates, getLatestRatesCrypto] = useCurrencyHandler();
+function* fetchCurrecyRate(): Generator<any, void, any> {
+  const [getLatestRates, getLatestRatesCrypto, getCurrencyConvert] = useCurrencyHandler();
 
   try {
-    const currencyRate = getLatestRates();
+    const [currencyRate, cryptoRate] = yield all([call(getLatestRates), call(getLatestRatesCrypto)]);
     yield put({
       type: 'First_Update',
-      currencyRate: currencyRate,
+      payload: {currencyRate, cryptoRate},
     });
   } catch (error) {
     console.log(error);

@@ -1,11 +1,22 @@
 const initialState = {
-  currencyRate: [], // Initialize as an empty array
+  AllRates: {
+    baseValue: 'USD',
+    currencyRate: [],
+    cryptoRates: [],
+  },
 };
 
 function currencyReducer(state = initialState, action: any) {
   switch (action.type) {
     case 'First_Update':
-      return {...state, currencyRate: action.currencyRate};
+      return {
+        ...state,
+        AllRates: {
+          ...state.AllRates,
+          currencyRate: action.payload.currencyRate,
+          cryptoRates: action.payload.cryptoRate,
+        },
+      };
     default:
       return state;
   }

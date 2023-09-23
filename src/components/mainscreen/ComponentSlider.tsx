@@ -1,34 +1,30 @@
-import {useRef, useCallback, useState, useEffect} from 'react';
+import {useRef, useCallback, useState} from 'react';
 import {ScrollView, View, StyleSheet, useWindowDimensions} from 'react-native';
 import {ContentSlider} from './ContentSlider';
-import {useCurrencyHandler} from '../../apiHandler/useCurrencyHandler';
+import {useSelector} from 'react-redux';
 
 import FocusedDot from '../../assets/ComponentSlider/FocusedScreen.svg';
 import UnFocusedDot from '../../assets/ComponentSlider/UnFocusedScreen.svg';
+
+type RootState = {
+  AllRates: {
+    currencyRate: string[];
+    cryptoRates: string[];
+  };
+};
 
 const ComponentSlider = () => {
   const windowWidth = useWindowDimensions().width;
   const scrollViewRef = useRef<ScrollView>(null);
   const [activeSlide, setActiveSlide] = useState(0);
-  const [getLatestRates, getLatestRatesCrypto] = useCurrencyHandler();
-  const [latestRates, setLatestRates] = useState<object>();
-  const [latestRatesCrypto, setLatestRatesCrypto] = useState<any>();
+  const latestRates = useSelector(
+    (state: RootState) => state.AllRates.currencyRate,
+  );
+  const latestRatesCrypto = useSelector(
+    (state: RootState) => state.AllRates.cryptoRates,
+  );
+
   var valueData: any;
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const rates = await getLatestRates();
-        const cryptoRates = await getLatestRatesCrypto();
-        setLatestRates(rates);
-        setLatestRatesCrypto(cryptoRates);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-
-    fetchData();
-  }, []);
 
   if (activeSlide == 0) {
     valueData = latestRates;
@@ -79,12 +75,7 @@ const styles = StyleSheet.create({
     marginTop: 24,
   },
   paginationDot: {
-    // width: 8,
-    // height: 8,
-    // borderRadius: 4,
-    // backgroundColor: '#D9D9D9',
     marginHorizontal: 6,
-    // overflow:'hidden'
   },
   activeDot: {
     backgroundColor: '#0F8743',
