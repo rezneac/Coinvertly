@@ -30,23 +30,23 @@ export const useCurrencyHandler = () => {
 
   const getCurrencyConvert = async (firstCurrency: string, secondCurrency: string, amount: string) => {
     try {
-      // const response = await axios.get('https://api.exchangerate.host/convert', {
-      //   params: {
-      //     from: firstCurrency,
-      //     to: secondCurrency,
-      //     amount: amount,
-      //     places: 2,
-      //   },
-      // });
+      const response = await axios.get('https://api.exchangerate.host/convert', {
+        params: {
+          from: firstCurrency,
+          to: secondCurrency,
+          amount: amount,
+          places: 2,
+        },
+      });
 
-      // const result = response.data.result;
+      const result = response.data.result;
 
-      // if (result !== null) {
-      //   return result.toString();
-      // } else {
-      //   return '0';
-      // }
-      return '01234';
+      if (result !== null) {
+        return result.toString();
+      } else {
+        return '0';
+      }
+      
 
     } catch (error) {
       console.error(error);
