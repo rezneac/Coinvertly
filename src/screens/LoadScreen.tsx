@@ -1,6 +1,6 @@
 import {StyleSheet, Text, View, ActivityIndicator} from 'react-native';
 import {useEffect} from 'react';
-import LoadIco from './loadIco.svg';
+import LoadIco from "../assets/loadScreen/loadIco.svg";
 
 interface IProps {
   navigation: any;
@@ -10,7 +10,7 @@ const LoadScreen = ({navigation}: IProps) => {
 
   useEffect(() => {
     setTimeout(() => {
-      navigation.navigate('MainScreen');
+      navigation.navigate('TabStack');
     }, 500);
   }, []);
 
