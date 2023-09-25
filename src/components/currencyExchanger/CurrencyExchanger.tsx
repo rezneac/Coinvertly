@@ -22,14 +22,17 @@ interface IProps {
 
 const CurrencyExchanger = ({image, currencyName, currencyRate, focusedCurrency, onPress, onChange}: IProps) => {
   const textInputRef = useRef<TextInput>(null);
+  // const [amount, setAmount] = useState<string>(currencyRate);
+  var amount: string = currencyRate;
 
-  console.log(currencyName);
-
-  useEffect(() => {
-    setAmount(currencyRate);
-  }, [currencyRate]);
-
-  const [amount, setAmount] = useState<string>(currencyRate);
+  // useEffect(() => {
+  //   // setAmount(currencyRate);
+  //   if (currencyRate) {
+  //     amount = currencyRate;
+  //   } else {
+  //     amount = '';
+  //   }
+  // }, [currencyRate]);
 
   const handleInputPress = () => {
     if (textInputRef.current) {
@@ -38,7 +41,7 @@ const CurrencyExchanger = ({image, currencyName, currencyRate, focusedCurrency, 
   };
 
   const handleTextChange = (value: string) => {
-    setAmount(value);
+    amount = value;
     onChange(value);
   };
 

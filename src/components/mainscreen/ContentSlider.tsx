@@ -1,13 +1,6 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  FlatList,
-  Pressable,
-  Dimensions,
-} from 'react-native';
+import {View, Text, StyleSheet, FlatList, Pressable, Dimensions} from 'react-native';
 import CurrencyBar from './CurrencyBar';
-import {useNavigation, NavigationProp} from '@react-navigation/native'; 
+import {useNavigation, NavigationProp} from '@react-navigation/native';
 
 const styles = StyleSheet.create({
   container: {
@@ -26,9 +19,9 @@ export const ContentSlider = [
   {
     id: 1,
     content: ({valueData, slideId}: IProps) => {
-      const navigation: AppNavigation = useNavigation<AppNavigation>(); 
+      const navigation = useNavigation<AppNavigation>();
       const pressHandler = (name: string) => {
-        navigation.navigate('CurrencyExchangerScreen', {currency: {name}});
+        navigation.navigate('CurrencyExchangerScreen', {currency: {name}, selector: 'secondCurrency'});
       };
 
       return (
@@ -53,7 +46,7 @@ export const ContentSlider = [
   {
     id: 2,
     content: ({valueData, slideId}: IProps) => {
-      const navigation: AppNavigation = useNavigation<AppNavigation>(); // Specify the type
+      const navigation = useNavigation<AppNavigation>(); // Specify the type
       const pressHandler = (name: string) => {
         navigation.navigate('CurrencyExchangerScreen', {currency: {name}});
       };

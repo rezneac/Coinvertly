@@ -2,7 +2,7 @@ import React, {useRef, useState} from 'react';
 import {View, TouchableOpacity, Pressable, Text, StyleSheet, FlatList, Image, TextInput} from 'react-native';
 import {AvailableCurrency} from '../../assets/icons/availableCurrency';
 import {currencyFlags} from '../../assets/icons/currencyFlags';
-import {useNavigation} from '@react-navigation/native';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
 
 import ArrowBack from '../../assets/currencyExchangerView/arrowLeftFace.svg';
 import Star from '../../assets/currencyExchangerView/star.svg';
@@ -15,13 +15,16 @@ interface CountryObject {
   code: string;
   description: string;
 }
+type AppNavigation = NavigationProp<Record<string, object | undefined>>;
 
 const CurrencyFinder = ({route}: any) => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<AppNavigation>();
   const [query, setQuery] = useState<string>('');
   const textInputRef = useRef<TextInput>(null);
   const [flatCurrencyList, setFlatCurrencyList] = useState<CountryObject[]>(Object.values(AvailableCurrency));
   const {selector}: CurrencyProp = route && route.params ? route.params : {selector: 'secondCurrency'};
+
+  console.log(selector);
 
   const onBackHandler = () => {
     navigation.goBack();
@@ -51,7 +54,10 @@ const CurrencyFinder = ({route}: any) => {
   };
 
   const onSelectHandler = (countrySelected: CountryObject) => {
-    navigation.navigate('CurrencyExchangerScreen', {countrySelected: countrySelected.code, selector});
+    navigation.navigate('CurrencyExchangerScreen', {
+      currency: countrySelected,
+      selector,
+    });
   };
 
   const renderItem = ({item}: any) => (
@@ -133,7 +139,6 @@ const styles = StyleSheet.create({
   },
   textInput: {
     flex: 1,
-    // color: 'rgba(218, 218, 218, 0.93)',
     color: 'black',
     lineHeight: 22,
   },

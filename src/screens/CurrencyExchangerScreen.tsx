@@ -5,16 +5,16 @@ import Outline from '../assets/currencyExchangerView/outline.svg';
 import ArrowBack from '../assets/currencyExchangerView/arrowLeftFace.svg';
 import CurrencyExchanger from '../components/currencyExchanger/CurrencyExchanger';
 import {useCurrencyHandler} from '../apiHandler/useCurrencyHandler';
-import {useNavigation} from '@react-navigation/native';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {getCurrencyConvert} from '../apiHandler/useCurrencyHandler';
 
 import {currencyFlags} from '../assets/icons/currencyFlags';
-import axios from 'axios';
 
 interface CurrencyProp {
   currency: {
     name: string;
   };
-  countrySelected: string;
+  updatedCountry: string;
   selector: string;
 }
 
@@ -23,10 +23,12 @@ interface Currency {
   value: string;
 }
 
-const CurrencyExchangerScreen = ({route, navigation}: any) => {
-  // const navigation = useNavigation();
+type AppNavigation = NavigationProp<Record<string, object | undefined>>;
 
-  const {currency, countrySelected, selector}: CurrencyProp = route.params;
+const CurrencyExchangerScreen = ({route}: any) => {
+  const navigation = useNavigation<AppNavigation>();
+
+  const {currency, selector}: CurrencyProp = route.params;
   const baseValue = store.getState().AllRates.baseValue;
 
   const [firstCurrency, setFirstCurrency] = useState<Currency>({currencyName: baseValue, value: '1'});
@@ -34,83 +36,92 @@ const CurrencyExchangerScreen = ({route, navigation}: any) => {
     currencyName: currency ? currency.name : '',
     value: '0',
   });
-  const [focusedCurrency, setFocusedCurrency] = useState<string>(firstCurrency.currencyName);
+
   var a = firstCurrency.value;
   var b = secondCurrency.value;
 
-  const [getLatestRates, getLatestRatesCrypto, getCurrencyConvert] = useCurrencyHandler();
+  var aName = firstCurrency.currencyName;
+  var bName = secondCurrency.currencyName;
 
-  const updateCurrency = useCallback(() => {
-    if (countrySelected !== null && selector !== null) {
-      if (selector === 'firstCurrency') {
-        setFirstCurrency({
-          ...firstCurrency,
-          currencyName: countrySelected,
-        });
-      } else if (selector === 'secondCurrency') {
-        setSecondCurrency({
-          ...secondCurrency,
-          currencyName: countrySelected,
-        });
-      }
-    }
-  }, [countrySelected, selector]);
+  const [focusedCurrency, setFocusedCurrency] = useState<string>(firstCurrency.currencyName);
 
-  const handleCurrencyUpdate = async (a1: string, b1: string, c1: string) => {
+  const handleCurrencyUpdateApi = async (a1: string, b1: string, c1: string) => {
     return await getCurrencyConvert(a1, b1, c1);
   };
+
   useEffect(() => {
-    const getLatestRate = async () => {
-      if (focusedCurrency == firstCurrency.currencyName) {
-        setSecondCurrency({
-          ...secondCurrency,
-          value: await handleCurrencyUpdate(
-            firstCurrency.currencyName,
-            secondCurrency.currencyName,
-            firstCurrency.value,
-          ),
-        });
-      } else if (focusedCurrency == secondCurrency.currencyName) {
-        setFirstCurrency({
-          ...firstCurrency,
-          value: await handleCurrencyUpdate(
-            secondCurrency.currencyName,
-            firstCurrency.currencyName,
-            secondCurrency.value,
-          ),
-        });
+    if (route.params && route.params.currency) {
+      const newCurrency = route.params.currency;
+      if (selector === 'firstCurrency') {
+        setFirstCurrency({currencyName: newCurrency.code, value: firstCurrency.value});
+      } else {
+        setSecondCurrency({currencyName: newCurrency.name || newCurrency.code, value: secondCurrency.value});
       }
-    };
+    }
+  }, [route.params]);
 
-    let timer = setTimeout(getLatestRate, 1100);
+  //TODO: make this component to update less times
+  const updateLatestRate = useCallback(async () => {
+    if (focusedCurrency === firstCurrency.currencyName) {
+      const updatedValue = await handleCurrencyUpdateApi(
+        firstCurrency.currencyName,
+        secondCurrency.currencyName,
+        firstCurrency.value,
+      );
 
+      setSecondCurrency({
+        ...secondCurrency,
+        value: await updatedValue,
+      });
+    } else {
+      const updatedValue = await handleCurrencyUpdateApi(
+        secondCurrency.currencyName,
+        firstCurrency.currencyName,
+        secondCurrency.value,
+      );
+      setFirstCurrency({
+        ...firstCurrency,
+        value: await updatedValue,
+      });
+    }
+  }, [firstCurrency, secondCurrency]);
+
+  useEffect(() => {
+    const timer = setTimeout(updateLatestRate, 900);
     return () => {
       clearTimeout(timer);
     };
-  }, [focusedCurrency, a, b]);
+  }, [a, b, aName, bName, selector]);
 
-  useEffect(() => {
-    updateCurrency();
-  }, [countrySelected, selector]);
-
-  const onSwapCurrencyHandler = () => {
+  const onSwapCurrencyHandler = useCallback(() => {
     setFirstCurrency(prevCurrency => {
       setSecondCurrency(firstCurrency);
       return secondCurrency;
     });
-  };
+  }, [firstCurrency, secondCurrency]);
 
-  const onImageHandler = (currency: string) => {
-    return currencyFlags[currency.toLowerCase()];
-  };
+  const onImageHandler = useCallback(
+    //TODO: Move to currencyExchanger
+    (currency: Currency) => {
+      if (firstCurrency.currencyName && secondCurrency.currencyName) {
+        return currencyFlags[currency.currencyName.toLowerCase()];
+      } else {
+        return '';
+      }
+    },
+    [currency],
+  );
 
-  const onNavigateToFinder = (selector: string) => {
-    navigation.navigate('CurrencyFinder', {selector: selector});
-  };
+  const onNavigateToFinder = useCallback(
+    (selector: string) => {
+      navigation.navigate('CurrencyFinder', {selector: selector});
+    },
+    [selector],
+  );
 
-  const onBackHandler = () => {
+  const onBackHandler = useCallback(() => {
     navigation.goBack();
-  };
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -128,7 +139,7 @@ const CurrencyExchangerScreen = ({route, navigation}: any) => {
       <View style={styles.convertor}>
         <CurrencyExchanger
           onPress={() => onNavigateToFinder('firstCurrency')}
-          image={onImageHandler(firstCurrency.currencyName)}
+          image={onImageHandler(firstCurrency)}
           currencyName={firstCurrency.currencyName}
           currencyRate={firstCurrency.value}
           focusedCurrency={currencyName => {
@@ -150,7 +161,7 @@ const CurrencyExchangerScreen = ({route, navigation}: any) => {
 
         <CurrencyExchanger
           onPress={() => onNavigateToFinder('secondCurrency')}
-          image={onImageHandler(secondCurrency.currencyName)}
+          image={onImageHandler(secondCurrency)}
           currencyName={secondCurrency.currencyName}
           currencyRate={secondCurrency.value}
           focusedCurrency={currencyName => {

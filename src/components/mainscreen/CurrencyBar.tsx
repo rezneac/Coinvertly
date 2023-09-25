@@ -3,6 +3,7 @@ import {StyleSheet, Text, View, Dimensions, Image} from 'react-native';
 // import {Svg} from 'react-native-svg';
 // import {handlerIcon} from '../handlerIcon';
 import {currencyFlags} from '../../assets/icons/currencyFlags';
+import store from '../../redux-saga/store';
 
 interface IProps {
   name: string;
@@ -19,14 +20,13 @@ const CurrencyBar = ({name, value}: IProps) => {
   return (
     <View style={styles.container}>
       {/* <View style={{}}>{iconComponent}</View> */}
-      <Image
-        style={{height: 30, width: 40, alignSelf: 'center'}}
-        source={{uri: iconData}}
-      />
+      <Image style={{height: 30, width: 40, alignSelf: 'center'}} source={{uri: iconData}} />
       <View style={styles.content}>
         <Text style={styles.title}>{name}</Text>
         <View style={styles.rates}>
-          <Text> 1$ ⁓ {rates} </Text>
+          <Text>
+            1 {store.getState().AllRates.baseValue} ⁓ {rates} {name}
+          </Text>
         </View>
       </View>
     </View>
@@ -52,7 +52,6 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   rates: {
-    backgroundColor: '#989898CC',
     borderRadius: 8,
   },
 });

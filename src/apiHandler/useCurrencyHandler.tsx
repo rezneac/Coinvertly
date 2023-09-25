@@ -28,31 +28,29 @@ export const useCurrencyHandler = () => {
     }
   };
 
-  const getCurrencyConvert = async (firstCurrency: string, secondCurrency: string, amount: string) => {
-    try {
-      const response = await axios.get('https://api.exchangerate.host/convert', {
-        params: {
-          from: firstCurrency,
-          to: secondCurrency,
-          amount: amount,
-          places: 2,
-        },
-      });
+  return [getLatestRates, getLatestRatesCrypto];
+};
 
-      const result = response.data.result;
+export const getCurrencyConvert = async (firstCurrency: string, secondCurrency: string, amount: string) => {
+  try {
+    const response = await axios.get('https://api.exchangerate.host/convert', {
+      params: {
+        from: firstCurrency,
+        to: secondCurrency,
+        amount: amount,
+        places: 2,
+      },
+    });
 
-      if (result !== null) {
-        return result.toString();
-      } else {
-        return '0';
-      }
-      
+    const result = response.data.result;
 
-    } catch (error) {
-      console.error(error);
+    if (result !== null) {
+      return result.toString();
+    } else {
       return '0';
     }
-  };
-
-  return [getLatestRates, getLatestRatesCrypto, getCurrencyConvert];
+  } catch (error) {
+    console.error(error);
+    return '0';
+  }
 };
