@@ -7,6 +7,7 @@ import SettingsScreen from './src/screens/SettingsScreen';
 import CustomBottomBar from './src/components/navigation/CustomBottomBar';
 import CurrencyExchangerScreen from './src/screens/CurrencyExchangerScreen';
 import CurrencyFinder from './src/components/currencyFinder/CurrencyFinder';
+import LoadScreen from './src/screens/LoadScreen';
 
 import {Provider} from 'react-redux';
 import store from './src/redux-saga/store';
@@ -32,8 +33,9 @@ const App = () => {
   return (
     <Provider store={store}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="TabStack" screenOptions={{headerShown: false}}>
+        <Stack.Navigator initialRouteName="LoadScreen" screenOptions={{headerShown: false}}>
           <Stack.Screen name="TabStack" component={TabStack} />
+          <Stack.Screen name="LoadScreen" component={LoadScreen} />
           <Stack.Screen name="CurrencyExchangerScreen" component={CurrencyExchangerScreen} />
           <Stack.Screen name="CurrencyFinder" component={CurrencyFinder} />
         </Stack.Navigator>

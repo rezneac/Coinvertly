@@ -24,8 +24,6 @@ const CurrencyFinder = ({route}: any) => {
   const [flatCurrencyList, setFlatCurrencyList] = useState<CountryObject[]>(Object.values(AvailableCurrency));
   const {selector}: CurrencyProp = route && route.params ? route.params : {selector: 'secondCurrency'};
 
-  console.log(selector);
-
   const onBackHandler = () => {
     navigation.goBack();
   };

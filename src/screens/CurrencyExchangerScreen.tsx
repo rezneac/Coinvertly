@@ -100,7 +100,6 @@ const CurrencyExchangerScreen = ({route}: any) => {
   const onImageHandler = useCallback(
     //TODO: Move to currencyExchanger
     (currency: Currency) => {
-      console.log(currency);
       if (firstCurrency.currencyName && secondCurrency.currencyName) {
         return currencyFlags[currency.currencyName.toLowerCase()];
       } else {
