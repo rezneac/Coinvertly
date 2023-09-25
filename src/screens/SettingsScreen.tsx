@@ -2,7 +2,6 @@ import {StyleSheet, Text, View} from 'react-native';
 import {version} from '../../package.json';
 
 const SettingsScreen = () => {
-  console.log(version);
 
   return (
     <View style={styles.contentContainer}>
@@ -32,7 +31,6 @@ const styles = StyleSheet.create({
   titleText: {
     color: '#1D212D',
     fontSize: 24,
-    height: 30,
   },
   containerSettings: {
     flex: 1,

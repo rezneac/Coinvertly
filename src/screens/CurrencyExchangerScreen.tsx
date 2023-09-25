@@ -37,11 +37,8 @@ const CurrencyExchangerScreen = ({route}: any) => {
     value: '0',
   });
 
-  var a = firstCurrency.value;
-  var b = secondCurrency.value;
-
-  var aName = firstCurrency.currencyName;
-  var bName = secondCurrency.currencyName;
+  var a = firstCurrency;
+  var b = secondCurrency;
 
   const [focusedCurrency, setFocusedCurrency] = useState<string>(firstCurrency.currencyName);
 
@@ -91,7 +88,7 @@ const CurrencyExchangerScreen = ({route}: any) => {
     return () => {
       clearTimeout(timer);
     };
-  }, [a, b, aName, bName, selector]);
+  }, [a.value, b.value, a.currencyName, b.currencyName, selector]);
 
   const onSwapCurrencyHandler = useCallback(() => {
     setFirstCurrency(prevCurrency => {
@@ -103,13 +100,14 @@ const CurrencyExchangerScreen = ({route}: any) => {
   const onImageHandler = useCallback(
     //TODO: Move to currencyExchanger
     (currency: Currency) => {
+      console.log(currency);
       if (firstCurrency.currencyName && secondCurrency.currencyName) {
         return currencyFlags[currency.currencyName.toLowerCase()];
       } else {
         return '';
       }
     },
-    [currency],
+    [currency, firstCurrency, secondCurrency],
   );
 
   const onNavigateToFinder = useCallback(

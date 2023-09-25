@@ -21,6 +21,7 @@ export const ContentSlider = [
     content: ({valueData, slideId}: IProps) => {
       const navigation = useNavigation<AppNavigation>();
       const pressHandler = (name: string) => {
+
         navigation.navigate('CurrencyExchangerScreen', {currency: {name}, selector: 'secondCurrency'});
       };
 
