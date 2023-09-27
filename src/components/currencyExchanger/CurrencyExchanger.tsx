@@ -1,15 +1,7 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {
-  View,
-  Text,
-  Image,
-  Pressable,
-  StyleSheet,
-  TextInput,
-  NativeSyntheticEvent,
-  TextInputChangeEventData,
-} from 'react-native';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
+import {View, Text, Image, Pressable, StyleSheet, TextInput} from 'react-native';
 import Arrow from '../../assets/currencyExchangerView/arrowDownFace.svg';
+import Outline from '../../assets/currencyExchangerView/outline.svg';
 
 interface IProps {
   image: string;
@@ -22,17 +14,7 @@ interface IProps {
 
 const CurrencyExchanger = ({image, currencyName, currencyRate, focusedCurrency, onPress, onChange}: IProps) => {
   const textInputRef = useRef<TextInput>(null);
-  // const [amount, setAmount] = useState<string>(currencyRate);
   var amount: string = currencyRate;
-
-  // useEffect(() => {
-  //   // setAmount(currencyRate);
-  //   if (currencyRate) {
-  //     amount = currencyRate;
-  //   } else {
-  //     amount = '';
-  //   }
-  // }, [currencyRate]);
 
   const handleInputPress = () => {
     if (textInputRef.current) {
@@ -44,7 +26,7 @@ const CurrencyExchanger = ({image, currencyName, currencyRate, focusedCurrency, 
     amount = value;
     onChange(value);
   };
-
+  
   return (
     <View style={styles.innerConteiner}>
       <Text>Amount</Text>
@@ -108,6 +90,9 @@ const styles = StyleSheet.create({
   textInputRate: {flex: 1},
   pressableText: {
     flexDirection: 'row',
+  },
+  outlineView: {
+    alignSelf: 'center',
   },
   pressed: {
     opacity: 0.7,

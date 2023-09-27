@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import store from '../redux-saga/store';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
 import Outline from '../assets/currencyExchangerView/outline.svg';
@@ -98,12 +98,11 @@ const CurrencyExchangerScreen = ({route}: any) => {
   }, [firstCurrency, secondCurrency]);
 
   const onImageHandler = useCallback(
-    //TODO: Move to currencyExchanger
     (currency: Currency) => {
       if (firstCurrency.currencyName && secondCurrency.currencyName) {
         return currencyFlags[currency.currencyName.toLowerCase()];
       } else {
-        return '';
+        return currencyFlags[0];
       }
     },
     [currency, firstCurrency, secondCurrency],
@@ -137,8 +136,8 @@ const CurrencyExchangerScreen = ({route}: any) => {
         <CurrencyExchanger
           onPress={() => onNavigateToFinder('firstCurrency')}
           image={onImageHandler(firstCurrency)}
-          currencyName={firstCurrency.currencyName}
-          currencyRate={firstCurrency.value}
+          currencyName={useMemo(() => firstCurrency.currencyName, [firstCurrency.currencyName])}
+          currencyRate={useMemo(() => firstCurrency.value, [firstCurrency.value])}
           focusedCurrency={currencyName => {
             setFocusedCurrency(currencyName);
           }}
@@ -159,8 +158,8 @@ const CurrencyExchangerScreen = ({route}: any) => {
         <CurrencyExchanger
           onPress={() => onNavigateToFinder('secondCurrency')}
           image={onImageHandler(secondCurrency)}
-          currencyName={secondCurrency.currencyName}
-          currencyRate={secondCurrency.value}
+          currencyName={useMemo(() => secondCurrency.currencyName, [secondCurrency.currencyName])}
+          currencyRate={useMemo(() => secondCurrency.value, [secondCurrency.value])}
           focusedCurrency={currencyName => {
             setFocusedCurrency(currencyName);
           }}

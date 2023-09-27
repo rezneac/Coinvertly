@@ -33,6 +33,7 @@ export const useCurrencyHandler = () => {
 
 export const getCurrencyConvert = async (firstCurrency: string, secondCurrency: string, amount: string) => {
   try {
+    console.log('Api called');
     const response = await axios.get('https://api.exchangerate.host/convert', {
       params: {
         from: firstCurrency,

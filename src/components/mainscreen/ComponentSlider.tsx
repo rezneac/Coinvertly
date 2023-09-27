@@ -1,5 +1,5 @@
 import {useRef, useCallback, useState} from 'react';
-import {ScrollView, View, StyleSheet, useWindowDimensions} from 'react-native';
+import {ScrollView, View, Text, StyleSheet, useWindowDimensions} from 'react-native';
 import {ContentSlider} from './ContentSlider';
 import {useSelector} from 'react-redux';
 
@@ -17,12 +17,8 @@ const ComponentSlider = () => {
   const windowWidth = useWindowDimensions().width;
   const scrollViewRef = useRef<ScrollView>(null);
   const [activeSlide, setActiveSlide] = useState(0);
-  const latestRates = useSelector(
-    (state: RootState) => state.AllRates.currencyRate,
-  );
-  const latestRatesCrypto = useSelector(
-    (state: RootState) => state.AllRates.cryptoRates,
-  );
+  const latestRates = useSelector((state: RootState) => state.AllRates.currencyRate);
+  const latestRatesCrypto = useSelector((state: RootState) => state.AllRates.cryptoRates);
 
   var valueData: any;
 
@@ -38,6 +34,16 @@ const ComponentSlider = () => {
     setActiveSlide(activeIndex);
   }, []);
 
+  //TODO: make this component to updaet less
+  const handleUnFetchedRates = useCallback(
+    (valueData: any) => {
+      if (valueData.length == 0) {
+        return <Text>Could not fetch data from api</Text>;
+      }
+    },
+    [valueData],
+  );
+
   return (
     <>
       <View style={styles.paginationContainer}>
@@ -47,6 +53,8 @@ const ComponentSlider = () => {
           </View>
         ))}
       </View>
+
+      {/* Carusel of currency view */}
       <ScrollView
         ref={scrollViewRef}
         horizontal
@@ -57,6 +65,7 @@ const ComponentSlider = () => {
         scrollEventThrottle={16}>
         {ContentSlider.map(slide => (
           <View key={slide.id} style={{width: windowWidth - 30}}>
+            {handleUnFetchedRates(valueData)}
             {slide.content({valueData, slideId: slide.id})}
           </View>
         ))}

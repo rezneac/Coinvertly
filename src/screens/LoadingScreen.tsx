@@ -1,18 +1,40 @@
 import {StyleSheet, Text, View, ActivityIndicator} from 'react-native';
-import {useEffect} from 'react';
-import LoadIco from "../assets/loadScreen/loadIco.svg";
+import {useEffect, useLayoutEffect} from 'react';
+import LoadIco from '../assets/loadScreen/loadIco.svg';
+import {useDispatch} from 'react-redux';
+import store from '../redux-saga/store';
 
 interface IProps {
   navigation: any;
 }
 
-const LoadScreen = ({navigation}: IProps) => {
+const LoadingScreen = ({navigation}: IProps) => {
+  const dispatch = useDispatch();
+
+  useLayoutEffect(() => {
+    dispatch({type: 'FETCH_CURRENCY_RATE'});
+  }, []);
 
   useEffect(() => {
-    setTimeout(() => {
-      navigation.navigate('TabStack');
-    }, 500);
-  }, []);
+    const handleAPIFetch = () => {
+      if (store.getState().AllRates.currencyRate.length !== 0) {
+        navigation.replace('TabStack');
+      } else {
+        setTimeout(() => {
+          navigation.navigate('TabStack');
+        }, 3500);
+      }
+    };
+
+    const listenToStore = store.subscribe(handleAPIFetch);
+
+    handleAPIFetch();
+
+    return () => {
+      // unsubscribe from listening to store changes
+      listenToStore();
+    };
+  }, [store]);
 
   return (
     <View style={styles.container}>
@@ -20,7 +42,7 @@ const LoadScreen = ({navigation}: IProps) => {
         <Text style={styles.customFontText}> Coinvertly </Text>
       </View>
       <View style={styles.imagePosition}>
-        <LoadIco  width={161} height={165} />
+        <LoadIco width={161} height={165} />
       </View>
       <View style={styles.bottomContent}>
         <ActivityIndicator color={'#181A4B'} size="large" />
@@ -53,4 +75,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LoadScreen;
+export default LoadingScreen;

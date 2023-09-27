@@ -2,15 +2,8 @@ import {StyleSheet, View, Text, Button, Image} from 'react-native';
 import CoinLogo from '../assets/logoIcon/coinLogo.svg';
 import ContentSlider from '../components/mainscreen/ComponentSlider';
 import store from '../redux-saga/store';
-import {useDispatch} from 'react-redux';
-import {useLayoutEffect} from 'react';
 
 const MainScreen = () => {
-  const dispatch = useDispatch();
-
-  useLayoutEffect(() => {
-    dispatch({type: 'FETCH_CURRENCY_RATE'});
-  }, []);
 
   return (
     <View style={styles.container}>
