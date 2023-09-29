@@ -46,6 +46,7 @@ export const getCurrencyConvert = async (firstCurrency: string, secondCurrency: 
     const result = response.data.result;
 
     if (result !== null) {
+      // console.log(response.data)
       return result.toString();
     } else {
       return '0';

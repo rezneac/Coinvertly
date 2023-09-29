@@ -4,6 +4,7 @@ import {StyleSheet, Text, View, Dimensions, Image} from 'react-native';
 // import {handlerIcon} from '../handlerIcon';
 import {currencyFlags} from '../../assets/icons/currencyFlags';
 import store from '../../redux-saga/store';
+import getTheme from '../../globalConstant/theme';
 
 interface IProps {
   name: string;
@@ -11,6 +12,7 @@ interface IProps {
 }
 
 const CurrencyBar = ({name, value}: IProps) => {
+  const theme = getTheme();
   let rates = parseFloat(value).toFixed(2);
 
   // const iconComponent = handlerIcon[name];
@@ -22,7 +24,7 @@ const CurrencyBar = ({name, value}: IProps) => {
       {/* <View style={{}}>{iconComponent}</View> */}
       <Image style={{height: 30, width: 40, alignSelf: 'center'}} source={{uri: iconData}} />
       <View style={styles.content}>
-        <Text style={styles.title}>{name}</Text>
+        <Text style={[styles.title, theme === 'dark' && {color: '#f6f6f6'}]}>{name}</Text>
         <View style={styles.rates}>
           <Text>
             1 {store.getState().AllRates.baseValue} ⁓ {rates} {name}

@@ -1,4 +1,4 @@
-import {NavigationContainer} from '@react-navigation/native';
+import { NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import MainScreen from './src/screens/MainScreen';
@@ -30,9 +30,10 @@ const TabStack = () => {
 const Stack = createNativeStackNavigator();
 
 const App = () => {
+
   return (
     <Provider store={store}>
-      <NavigationContainer>
+      <NavigationContainer >
         <Stack.Navigator initialRouteName="LoadingScreen" screenOptions={{headerShown: false}}>
           <Stack.Screen name="TabStack" component={TabStack} />
           <Stack.Screen name="LoadingScreen" component={LoadingScreen} />

@@ -2,13 +2,16 @@ import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import store from '../redux-saga/store';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
 import Outline from '../assets/currencyExchangerView/outline.svg';
+import OutlineLight from '../assets/currencyExchangerView/outlineLight.svg';
 import ArrowBack from '../assets/currencyExchangerView/arrowLeftFace.svg';
+import ArrowBackLight from '../assets/currencyExchangerView/arrowLeftFaceLight.svg';
 import CurrencyExchanger from '../components/currencyExchanger/CurrencyExchanger';
 import {useCurrencyHandler} from '../apiHandler/useCurrencyHandler';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {getCurrencyConvert} from '../apiHandler/useCurrencyHandler';
 
 import {currencyFlags} from '../assets/icons/currencyFlags';
+import getTheme from '../globalConstant/theme';
 
 interface CurrencyProp {
   currency: {
@@ -26,6 +29,7 @@ interface Currency {
 type AppNavigation = NavigationProp<Record<string, object | undefined>>;
 
 const CurrencyExchangerScreen = ({route}: any) => {
+  const theme = getTheme();
   const navigation = useNavigation<AppNavigation>();
 
   const {currency, selector}: CurrencyProp = route.params;
@@ -120,19 +124,19 @@ const CurrencyExchangerScreen = ({route}: any) => {
   }, []);
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, theme === 'dark' && {backgroundColor: '#1D212D'}]}>
       <View style={styles.titleAppView}>
         <View style={styles.backButton}>
-          <Pressable onPress={onBackHandler} style={({pressed}) => [pressed && styles.pressed]}>
-            <ArrowBack />
+          <Pressable onPress={onBackHandler} style={({pressed}) => pressed && styles.pressed}>
+            {theme === 'dark' ? <ArrowBackLight /> : <ArrowBack />}
           </Pressable>
         </View>
         <View style={styles.titleView}>
-          <Text style={styles.titleAppText}>Coinvertly</Text>
+          <Text style={[styles.titleAppText, theme === 'dark' && {color: '#F8F8F8'}]}>Coinvertly</Text>
         </View>
       </View>
 
-      <View style={styles.convertor}>
+      <View style={[styles.convertor, theme === 'dark' && {backgroundColor: '#33373D'}]}>
         <CurrencyExchanger
           onPress={() => onNavigateToFinder('firstCurrency')}
           image={onImageHandler(firstCurrency)}
@@ -151,7 +155,7 @@ const CurrencyExchangerScreen = ({route}: any) => {
 
         <View style={styles.outlineView}>
           <Pressable onPress={onSwapCurrencyHandler} style={({pressed}) => [pressed && styles.pressed]}>
-            <Outline />
+            {theme === 'dark' ? <OutlineLight /> : <Outline />}
           </Pressable>
         </View>
 

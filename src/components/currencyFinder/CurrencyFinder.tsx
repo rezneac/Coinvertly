@@ -7,6 +7,7 @@ import {NavigationProp, useNavigation} from '@react-navigation/native';
 import ArrowBack from '../../assets/currencyExchangerView/arrowLeftFace.svg';
 import Star from '../../assets/currencyExchangerView/star.svg';
 import Search from '../../assets/currencyExchangerView/searchIcon.svg';
+import getTheme from '../../globalConstant/theme';
 
 interface CurrencyProp {
   selector: string;
@@ -18,6 +19,7 @@ interface CountryObject {
 type AppNavigation = NavigationProp<Record<string, object | undefined>>;
 
 const CurrencyFinder = ({route}: any) => {
+  const theme = getTheme();
   const navigation = useNavigation<AppNavigation>();
   const [query, setQuery] = useState<string>('');
   const textInputRef = useRef<TextInput>(null);
@@ -64,8 +66,8 @@ const CurrencyFinder = ({route}: any) => {
         <View style={styles.currencyItem}>
           <Image style={styles.imageFlags} source={{uri: currencyFlags[item.code.toLowerCase()]}} />
           <View style={styles.textContainer}>
-            <Text style={styles.currencyCode}>{item.code}</Text>
-            <Text style={styles.countryName}>{item.description}</Text>
+            <Text style={[styles.currencyCode, theme === 'dark' && {color: '#f8f8f8'}]}>{item.code}</Text>
+            <Text style={[styles.countryName, theme === 'dark' && {color: '#ADAFB1'}]}>{item.description}</Text>
           </View>
         </View>
       </Pressable>
@@ -84,7 +86,7 @@ const CurrencyFinder = ({route}: any) => {
           </Pressable>
         </View>
         <View style={styles.titleView}>
-          <Text style={styles.titleAppText}>Find </Text>
+          <Text style={[styles.titleAppText, theme === 'dark' && {color: '#F8F8F8'}]}>Find </Text>
         </View>
       </View>
 
@@ -104,7 +106,7 @@ const CurrencyFinder = ({route}: any) => {
         </View>
       </Pressable>
 
-      <View style={styles.contentContainer}>
+      <View style={[styles.contentContainer, theme === 'dark' && {backgroundColor: '#33373D'}]}>
         <FlatList data={flatCurrencyList} keyExtractor={item => item.code} renderItem={renderItem} />
       </View>
     </View>
@@ -121,7 +123,7 @@ const styles = StyleSheet.create({
     marginTop: 26,
     marginHorizontal: 15,
     flexDirection: 'row',
-    backgroundColor: 'rgba(218, 218, 218, 0.93)',
+    backgroundColor: '#706F6F',
     borderRadius: 16,
     paddingHorizontal: 8,
     alignItems: 'center',

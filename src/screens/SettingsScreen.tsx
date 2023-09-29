@@ -1,17 +1,21 @@
 import {StyleSheet, Text, View} from 'react-native';
 import {version} from '../../package.json';
+import getTheme from '../globalConstant/theme';
 
 const SettingsScreen = () => {
+  const theme = getTheme();
 
   return (
-    <View style={styles.contentContainer}>
+    <View style={[styles.contentContainer, theme === 'dark' && {backgroundColor: '#1D212D'}]}>
       <View style={styles.titleContainer}>
-        <Text style={styles.titleText}>Settings</Text>
+        <Text style={[styles.titleText, theme === 'dark' && {color: '#f6f6f6'}]}>Settings</Text>
       </View>
-      <View style={styles.containerSettings}>
-        <View style={styles.versionContent}>
-          <Text style={styles.titleSettingContent}>Version</Text>
-          <Text style={styles.infoSettingContent}>{version}</Text>
+      <View style={[styles.containerSettings, theme === 'dark' && {backgroundColor: '#33373D'}]}>
+        <View style={[styles.versionContent, theme === 'dark' && {backgroundColor: '#4C5056'}]}>
+          <Text style={[styles.titleSettingContent, theme === 'dark' && {color: '#f6f6f6'}]}>Version</Text>
+          <Text style={[styles.infoSettingContent, theme === 'dark' && {color: '#f6f6f6', opacity: 0.6}]}>
+            {version}
+          </Text>
         </View>
       </View>
     </View>

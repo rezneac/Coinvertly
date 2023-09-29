@@ -1,14 +1,17 @@
-import {StyleSheet, Text, View, ActivityIndicator} from 'react-native';
+import {StyleSheet, Text, View, ActivityIndicator, useColorScheme} from 'react-native';
 import {useEffect, useLayoutEffect} from 'react';
 import LoadIco from '../assets/loadScreen/loadIco.svg';
 import {useDispatch} from 'react-redux';
 import store from '../redux-saga/store';
+import getTheme from '../globalConstant/theme';
 
 interface IProps {
   navigation: any;
 }
 
 const LoadingScreen = ({navigation}: IProps) => {
+  const theme = getTheme();
+
   const dispatch = useDispatch();
 
   useLayoutEffect(() => {
@@ -22,7 +25,7 @@ const LoadingScreen = ({navigation}: IProps) => {
       } else {
         setTimeout(() => {
           navigation.navigate('TabStack');
-        }, 3500);
+        }, 1500);
       }
     };
 
@@ -37,15 +40,15 @@ const LoadingScreen = ({navigation}: IProps) => {
   }, [store]);
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, theme === 'dark' && {backgroundColor: '#1D212D'}]}>
       <View style={styles.textPosition}>
-        <Text style={styles.customFontText}> Coinvertly </Text>
+        <Text style={[styles.customFontText, theme === 'dark' && {color: '#F8F8F8'}]}> Coinvertly </Text>
       </View>
       <View style={styles.imagePosition}>
         <LoadIco width={161} height={165} />
       </View>
       <View style={styles.bottomContent}>
-        <ActivityIndicator color={'#181A4B'} size="large" />
+        <ActivityIndicator color={theme === 'dark' ? '#F8F8F8' : '#1D212D'} size="large" />
       </View>
     </View>
   );

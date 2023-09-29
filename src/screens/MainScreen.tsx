@@ -2,20 +2,24 @@ import {StyleSheet, View, Text, Button, Image} from 'react-native';
 import CoinLogo from '../assets/logoIcon/coinLogo.svg';
 import ContentSlider from '../components/mainscreen/ComponentSlider';
 import store from '../redux-saga/store';
+import getTheme from '../globalConstant/theme';
 
 const MainScreen = () => {
+  const theme = getTheme();
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, theme === 'dark' && {backgroundColor: '#1D212D'}]}>
       <View style={styles.upperView}>
         <Text style={styles.textLogo}>Coinvertly</Text>
         <View style={styles.logoIconContainer}>
           <CoinLogo width={117} height={114} />
         </View>
       </View>
-      <View style={styles.currenciesBars}>
+      <View style={[styles.currenciesBars, theme === 'dark' && {backgroundColor: '#33373D'}]}>
         <View style={styles.content}>
-          <Text style={styles.baseValueText}>Base Value: {store.getState().AllRates.baseValue}</Text>
+          <Text style={[styles.baseValueText, theme === 'dark' && {color: '#f6f6f6'}]}>
+            Base Value: {store.getState().AllRates.baseValue}
+          </Text>
           <ContentSlider />
         </View>
       </View>
